@@ -9,13 +9,13 @@ public class EntryDetails
 	/** Name of entry, including full path */
 	private String _name = null;
 	/** Flag to show if it's present or not (might be zero length) */
-	private boolean[] _present = new boolean[2];
+	private final boolean[] _present = new boolean[2];
 	/** Sizes of this file, in bytes, in archives */
-	private long[] _sizes = new long[2];
+	private final long[] _sizes = new long[2];
 	/** Md5 sums in both archives */
-	private String[] _md5Sums = new String[2];
+	private final String[] _md5Sums = new String[2];
 	/** SizeChange */
-	private SizeChange _sizeChange = new SizeChange();
+	private final SizeChange _sizeChange = new SizeChange();
 
 	/** Constants for entry status */
 	public enum EntryStatus
@@ -26,7 +26,7 @@ public class EntryDetails
 		/** File size same (md5 not checked)   */ SAME_SIZE,
 		/** File checksum different            */ CHANGED_SUM,
 		/** Files really equal                 */ EQUAL
-	};
+	}
 	// TODO: Each of these status flags needs an icon
 
 	/**
@@ -69,16 +69,6 @@ public class EntryDetails
 
 	/**
 	 * @param inIndex index, either 0 or 1
-	 * @return md5 sum of this file in corresponding archive
-	 */
-	public String getMd5Sum(int inIndex)
-	{
-		if (inIndex < 0 || inIndex > 1) {return null;}
-		return _md5Sums[inIndex];
-	}
-
-	/**
-	 * @param inIndex index, either 0 or 1
 	 * @param inMd5Sum md5 checksum of this file
 	 */
 	public void setMd5Sum(int inIndex, String inMd5Sum)
@@ -111,15 +101,6 @@ public class EntryDetails
 		if (!_md5Sums[0].equals(_md5Sums[1])) {return EntryStatus.CHANGED_SUM;}
 		return EntryStatus.EQUAL;
 	}
-
-	/**
-	 * @return difference in file sizes (bytes)
-	 */
-//	public long getSizeDifference()
-//	{
-//		return _sizes[1] - _sizes[0];
-//	}
-
 
 	/**
 	 * @return size change object

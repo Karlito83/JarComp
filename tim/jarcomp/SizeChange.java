@@ -24,12 +24,10 @@ class SizeChange implements Comparable<SizeChange>
 	 */
 	public int compareTo(SizeChange inOther)
 	{
-		if (inOther._changed != _changed)
-		{
+		if (inOther._changed != _changed) {
 			return _changed ? 1 : -1;
 		}
-		if (_sizeDiff > inOther._sizeDiff)
-		{
+		if (_sizeDiff > inOther._sizeDiff) {
 			return 1;
 		}
 		return (_sizeDiff == inOther._sizeDiff) ? 0 : -1;

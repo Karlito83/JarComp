@@ -1,8 +1,8 @@
-Jarcomp version 2
+Jarcomp version 3
 =================
 
 Jarcomp is a simple tool for comparing jar files or zip files.
-Full details can be found at http://activityworkshop.net/software/jarcomp/
+Full details can be found at https://activityworkshop.net/software/jarcomp/
 
 Jarcomp is copyright activityworkshop.net and distributed under the terms of the Gnu GPL version 2.
 You may freely use the software, and may help others to freely use it too.  For further information
@@ -16,7 +16,7 @@ Running
 =======
 
 To run Jarcomp from the jar file, simply call it from a command prompt or shell:
-   java -jar jarcomp_02.jar
+   java -jar jarcomp_03.jar
 
 If the jar file is saved in a different directory, you will need to include the path.
 Depending on your system settings, you may be able to click or double-click on the jar file
@@ -24,8 +24,13 @@ in a file manager window to execute it.  A shortcut, menu item, alias, desktop i
 or other link can of course be made should you wish.
 
 To specify two files to compare, simply add them to the command line, eg:
-   java -jar jarcomp_02.jar file1.jar file2.jar
+   java -jar jarcomp_03.jar file1.jar file2.jar
 
+
+What's new with version 2
+===============================
+
+* Ignored directory entries found in the jar(s), only care about files.
 
 What's new with version 2
 ===============================
@@ -41,4 +46,4 @@ Further information and updates
 ===============================
 
 To obtain the source code (if it wasn't included in your jar file), or for further information,
-please visit the website:  http://activityworkshop.net/
+please visit the website:  https://activityworkshop.net/

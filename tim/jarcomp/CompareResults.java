@@ -10,7 +10,7 @@ public class CompareResults extends EntryDetails
 	/** list of entries */
 	private ArrayList<EntryDetails> _entries = null;
 	/** Number of files in each archive */
-	private int[] _numFiles = new int[2];
+	private final int[] _numFiles = new int[2];
 
 
 	/**
@@ -57,11 +57,10 @@ public class CompareResults extends EntryDetails
 	public boolean getEntriesDifferent()
 	{
 		// Loop over all entries
-		for (int i=0; i<_entries.size(); i++) {
-			EntryDetails.EntryStatus status = _entries.get(i).getStatus();
-			if (status != EntryDetails.EntryStatus.EQUAL
-				&& status != EntryDetails.EntryStatus.SAME_SIZE)
-			{
+		for (EntryDetails entry : _entries)
+		{
+			EntryStatus status = entry.getStatus();
+			if (status != EntryStatus.EQUAL && status != EntryStatus.SAME_SIZE) {
 				return true;
 			}
 		}
@@ -74,8 +73,9 @@ public class CompareResults extends EntryDetails
 	public boolean getEntriesMd5Checked()
 	{
 		// Loop over all entries
-		for (int i=0; i<_entries.size(); i++) {
-			if (_entries.get(i).getStatus() == EntryDetails.EntryStatus.SAME_SIZE) {
+		for (EntryDetails entry : _entries)
+		{
+			if (entry.getStatus() == EntryStatus.SAME_SIZE) {
 				return false;
 			}
 		}

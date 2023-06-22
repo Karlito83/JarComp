@@ -15,7 +15,7 @@ import javax.swing.border.EtchedBorder;
 public class JarDetailsDisplay extends JPanel
 {
 	/** Array of four labels for details */
-	private JLabel[] _labels = null;
+	private final JLabel[] _labels;
 	/** Number of labels */
 	private static final int NUM_LABELS = 4;
 

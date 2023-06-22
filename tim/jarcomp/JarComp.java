@@ -5,14 +5,14 @@ import java.io.File;
 /**
  * Jar comparer tool
  * Copyright activityworkshop.net
- * Please see http://activityworkshop.net/software/ for more information
+ * Please see https://activityworkshop.net/software/ for more information
  */
 public class JarComp
 {
 	/** Version number of tool */
-	public static final String VERSION_NUMBER = "2";
+	public static final String VERSION_NUMBER = "3";
 	/** Build number */
-	public static final String BUILD_NUMBER = "009";
+	public static final String BUILD_NUMBER = "010";
 
 	/**
 	 * Main entry point to Jar comparer tool
@@ -22,7 +22,8 @@ public class JarComp
 	{
 		// Parse command line arguments, extract two files if available
 		File file1 = null, file2 = null;
-		if (args != null && args.length > 0) {
+		if (args != null && args.length > 0)
+		{
 			file1 = new File(args[0]);
 			if (args.length > 1) {
 				file2 = new File(args[1]);

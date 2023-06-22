@@ -10,7 +10,7 @@ import javax.swing.filechooser.FileFilter;
 public class GenericFileFilter extends FileFilter
 {
 	/** Filter description for display */
-	private String _filterDesc = null;
+	private final String _filterDesc;
 	/** Array of allowed three-character suffixes */
 	private String[] _threeCharSuffixes = null;
 	/** Array of allowed four-character suffixes */
@@ -30,16 +30,15 @@ public class GenericFileFilter extends FileFilter
 			_threeCharSuffixes = new String[inSuffixes.length];
 			_fourCharSuffixes = new String[inSuffixes.length];
 			int threeIndex = 0, fourIndex = 0;
-			for (int i=0; i<inSuffixes.length; i++)
+			for (String inSuffix : inSuffixes)
 			{
-				String suffix = inSuffixes[i];
+				String suffix = inSuffix;
 				if (suffix != null)
 				{
 					suffix = suffix.trim().toLowerCase();
 					if (suffix.length() == 3) {
 						_threeCharSuffixes[threeIndex++] = suffix;
-					}
-					else if (suffix.length() == 4) {
+					} else if (suffix.length() == 4) {
 						_fourCharSuffixes[fourIndex++] = suffix;
 					}
 				}
@@ -97,10 +96,9 @@ public class GenericFileFilter extends FileFilter
 		if (inSuffixToCheck != null && inAllowedSuffixes != null)
 		{
 			// Loop over allowed suffixes
-			for (int i=0; i<inAllowedSuffixes.length; i++)
+			for (String inAllowedSuffix : inAllowedSuffixes)
 			{
-				if (inAllowedSuffixes[i] != null && inSuffixToCheck.equals(inAllowedSuffixes[i]))
-				{
+				if (inAllowedSuffix != null && inSuffixToCheck.equals(inAllowedSuffix)) {
 					return true;
 				}
 			}

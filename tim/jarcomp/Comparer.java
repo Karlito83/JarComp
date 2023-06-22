@@ -29,7 +29,7 @@ public abstract class Comparer
 		results.setSize(0, inFile1.length());
 		results.setSize(1, inFile2.length());
 		// Make empty list
-		ArrayList<EntryDetails> entryList = new ArrayList<EntryDetails>();
+		ArrayList<EntryDetails> entryList = new ArrayList<>();
 		// load first file, make entrydetails object for each one
 		final int numFiles1 = makeEntries(entryList, inFile1, 0);
 		results.setNumFiles(0, numFiles1);
@@ -39,7 +39,8 @@ public abstract class Comparer
 		results.setEntryList(entryList);
 
 		// Check md5 sums if necessary
-		if (inMd5) {
+		if (inMd5)
+		{
 			calculateMd5(results, inFile1, 0);
 			calculateMd5(results, inFile2, 1);
 		}
@@ -59,18 +60,21 @@ public abstract class Comparer
 	{
 		boolean checkList = (inList.size() > 0);
 		int numFiles = 0;
-		ZipFile zip = null;
-		try
+		try (ZipFile zip = new ZipFile(inFile))
 		{
-			zip = new ZipFile(inFile);
 			Enumeration<?> zipEntries = zip.entries();
 			while (zipEntries.hasMoreElements())
 			{
 				ZipEntry ze = (ZipEntry) zipEntries.nextElement();
+				if (ze.isDirectory()) {
+					continue; // ignore these
+				}
 				numFiles++;
 				String name = ze.getName();
 				EntryDetails details = null;
-				if (checkList) {details = getEntryFromList(inList, name);}
+				if (checkList) {
+					details = getEntryFromList(inList, name);
+				}
 				// Construct new details object if necessary
 				if (details == null)
 				{
@@ -81,12 +85,8 @@ public abstract class Comparer
 				// set size
 				details.setSize(inIndex, ze.getSize());
 			}
-		}
-		catch (IOException ioe) {
+		} catch (IOException ioe) {
 			System.err.println("Ouch: " + ioe.getMessage());
-		}
-		finally {
-			try {zip.close();} catch (Exception e) {}
 		}
 		return numFiles;
 	}
@@ -98,10 +98,8 @@ public abstract class Comparer
 	 */
 	private static EntryDetails getEntryFromList(ArrayList<EntryDetails> inList, String inName)
 	{
-		EntryDetails details = null;
-		for (int i=0; i<inList.size(); i++)
+		for (EntryDetails details : inList)
 		{
-			details = inList.get(i);
 			if (details.getName() != null && details.getName().equals(inName)) {
 				return details;
 			}
@@ -113,18 +111,15 @@ public abstract class Comparer
 	 * Calculate the md5 sums of all relevant entries
 	 * @param inResults results from preliminary check
 	 * @param inFile file to read
-	 * @param inIndex 0 or 1
+	 * @param inIndex file index, either 0 or 1
 	 */
 	private static void calculateMd5(CompareResults inResults, File inFile, int inIndex)
 	{
 		ArrayList<EntryDetails> list = inResults.getEntryList();
-		ZipFile zip = null;
-		try
+		try (ZipFile zip = new ZipFile(inFile))
 		{
-			zip = new ZipFile(inFile);
-			for (int i=0; i<list.size(); i++)
+			for (EntryDetails entry : list)
 			{
-				EntryDetails entry = list.get(i);
 				if (entry.getStatus() == EntryDetails.EntryStatus.SAME_SIZE)
 				{
 					// Must be present in both archives if size is the same
@@ -132,21 +127,18 @@ public abstract class Comparer
 					if (zipEntry == null) {
 						System.err.println("zipEntry for " + entry.getName() + " shouldn't be null!");
 					}
-					Md5 hasher = new Md5(zip.getInputStream(zipEntry));
-					byte[] digest = hasher.getDigest();
-					if (digest != null) {
-						String hash = hasher.getStringDigest();
-						// System.out.println("Calculated md5 sum for " + entry.getName() + " - '" + hash + "'");
-						entry.setMd5Sum(inIndex, hash);
+					else
+					{
+						Md5 hasher = new Md5(zip.getInputStream(zipEntry));
+						byte[] digest = hasher.getDigest();
+						if (digest != null) {
+							entry.setMd5Sum(inIndex, hasher.getStringDigest());
+						}
 					}
 				}
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			System.err.println("Exception: " + e.getMessage());
-		}
-		finally {
-			try {zip.close();} catch (Exception e) {}
 		}
 	}
 }

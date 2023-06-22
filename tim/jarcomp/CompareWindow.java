@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -28,9 +26,9 @@ import javax.swing.table.TableCellRenderer;
 public class CompareWindow
 {
 	/** Main window object */
-	private JFrame _mainWindow = null;
+	private final JFrame _mainWindow;
 	/** Two files to compare */
-	private File[] _files = new File[2];
+	private final File[] _files = new File[2];
 	/** Displays for jar file details */
 	private JarDetailsDisplay[] _detailsDisplays = null;
 	/** Label for compare status */
@@ -80,19 +78,11 @@ public class CompareWindow
 		// Button panel
 		JPanel buttonPanel = new JPanel();
 		JButton compareButton = new JButton("Compare ...");
-		compareButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				startCompare();
-			}
-		});
+		compareButton.addActionListener(e -> startCompare());
 		buttonPanel.add(compareButton);
 		_refreshButton = new JButton("Refresh");
 		_refreshButton.setEnabled(false);
-		_refreshButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				startCompare(_files[0], _files[1], false);
-			}
-		});
+		_refreshButton.addActionListener(e -> startCompare(_files[0], _files[1], false));
 		buttonPanel.add(_refreshButton);
 		buttonPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		topPanel.add(buttonPanel);
@@ -146,18 +136,10 @@ public class CompareWindow
 		bottomPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		_md5Button = new JButton("Check Md5 sums");
 		_md5Button.setEnabled(false);
-		_md5Button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				startCompare(_files[0], _files[1], true);
-			}
-		});
+		_md5Button.addActionListener(arg0 -> startCompare(_files[0], _files[1], true));
 		bottomPanel.add(_md5Button);
 		JButton closeButton = new JButton("Close");
-		closeButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				System.exit(0);
-			}
-		});
+		closeButton.addActionListener(arg0 -> System.exit(0));
 		bottomPanel.add(closeButton);
 		mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 		return mainPanel;
@@ -205,11 +187,7 @@ public class CompareWindow
 
 		// Start separate thread to compare files
 		_checkMd5 = inMd5;
-		new Thread(new Runnable() {
-			public void run() {
-				doCompare();
-			}
-		}).start();
+		new Thread(this::doCompare).start();
 	}
 
 	/**
@@ -228,8 +206,7 @@ public class CompareWindow
 		}
 		_detailsDisplays[0].setContents(_files[0], results, 0);
 		_detailsDisplays[1].setContents(_files[1], results, 1);
-		// System.out.println(_files[0].getName() + " has " + results.getNumFiles(0) + " files, "
-		//	+ _files[1].getName() + " has " + results.getNumFiles(1));
+
 		if (results.getEntriesDifferent()) {
 			_statusLabel2.setText((archivesDifferent?"and":"but") + " the files have different contents");
 		}
@@ -282,7 +259,7 @@ public class CompareWindow
 				rechoose = (!file.exists() || !file.canRead());
 			}
 			// Check it's not the same as the first file, if any
-			if (inFirstFile != null && file != null && file.equals(inFirstFile))
+			if (file != null && file.equals(inFirstFile))
 			{
 				JOptionPane.showMessageDialog(_mainWindow, "The second file is the same as the first file!\n"
 					+ "Please select another file to compare with '" + inFirstFile.getName() + "'",

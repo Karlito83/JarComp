@@ -16,7 +16,7 @@ public class EntryTableModel extends AbstractTableModel
 	 * Clear list to start a new comparison
 	 */
 	public void reset() {
-		_entries = new ArrayList<EntryDetails>();
+		_entries = new ArrayList<>();
 	}
 
 	/**
@@ -36,7 +36,6 @@ public class EntryTableModel extends AbstractTableModel
 		return 3;
 		// TODO: Columns for size1, size2, status (as icon), size difference
 	}
-
 
 	/**
 	 * @return class of column, needed for sorting the Longs properly
@@ -87,7 +86,8 @@ public class EntryTableModel extends AbstractTableModel
 	 */
 	private static String getText(EntryStatus inStatus)
 	{
-		switch (inStatus) {
+		switch (inStatus)
+		{
 			case ADDED: return "Added";
 			case CHANGED_SIZE: return "Changed size";
 			case CHANGED_SUM: return "Changed sum";
@@ -103,8 +103,7 @@ public class EntryTableModel extends AbstractTableModel
 	 */
 	public boolean areDifferent(int inRowNum)
 	{
-		if (inRowNum >= 0 && inRowNum < getRowCount())
-		{
+		if (inRowNum >= 0 && inRowNum < getRowCount()) {
 			return _entries.get(inRowNum).isChanged();
 		}
 		return false;
