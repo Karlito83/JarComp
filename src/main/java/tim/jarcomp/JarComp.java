@@ -14,7 +14,7 @@ public class JarComp {
 
 	/**
 	 * Main entry point to Jar comparer tool
-	 * 
+	 *
 	 * @param args command line arguments
 	 */
 	public static void main(String[] args) {

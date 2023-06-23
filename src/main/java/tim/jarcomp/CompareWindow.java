@@ -63,7 +63,7 @@ public class CompareWindow {
 
 	/**
 	 * Make the GUI components for the main dialog
-	 * 
+	 *
 	 * @return JPanel containing GUI components
 	 */
 	private JPanel makeComponents() {
@@ -152,7 +152,7 @@ public class CompareWindow {
 
 	/**
 	 * Start the comparison using the two specified files
-	 * 
+	 *
 	 * @param inFile1 first file
 	 * @param inFile2 second file
 	 * @param inMd5   true to check Md5 sums as well
@@ -233,7 +233,7 @@ public class CompareWindow {
 
 	/**
 	 * Select a file for the comparison
-	 * 
+	 *
 	 * @param inTitle     title of dialog
 	 * @param inFirstFile File to compare selected file with (or null)
 	 * @return selected File, or null if cancelled

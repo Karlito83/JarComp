@@ -1,6 +1,7 @@
 package tim.jarcomp;
 
 import java.io.File;
+
 import javax.swing.filechooser.FileFilter;
 
 /**
@@ -16,7 +17,7 @@ public class GenericFileFilter extends FileFilter {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param inDescription filter description
 	 * @param inSuffixes    array of allowed 3- and 4-character file suffixes
 	 */
@@ -43,16 +44,17 @@ public class GenericFileFilter extends FileFilter {
 
 	/**
 	 * Check whether to accept the specified file or not
-	 * 
+	 *
 	 * @see javax.swing.filechooser.FileFilter#accept(java.io.File)
 	 */
+	@Override
 	public boolean accept(File inFile) {
 		return inFile.isDirectory() || acceptFilename(inFile.getName());
 	}
 
 	/**
 	 * Check whether to accept the given filename
-	 * 
+	 *
 	 * @param inName name of file
 	 * @return true if accepted, false otherwise
 	 */
@@ -78,7 +80,7 @@ public class GenericFileFilter extends FileFilter {
 
 	/**
 	 * Check whether to accept the given filename
-	 * 
+	 *
 	 * @param inSuffixToCheck   suffix to check
 	 * @param inAllowedSuffixes array of allowed suffixes
 	 * @return true if accepted, false otherwise
@@ -98,9 +100,10 @@ public class GenericFileFilter extends FileFilter {
 
 	/**
 	 * Get description
-	 * 
+	 *
 	 * @see javax.swing.filechooser.FileFilter#getDescription()
 	 */
+	@Override
 	public String getDescription() {
 		return filterDesc;
 	}
