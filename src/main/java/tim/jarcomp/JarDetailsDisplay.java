@@ -14,8 +14,9 @@ import javax.swing.border.EtchedBorder;
  */
 public class JarDetailsDisplay extends JPanel
 {
+	private static final long serialVersionUID = 1L;
 	/** Array of four labels for details */
-	private final JLabel[] _labels;
+	private final JLabel[] labels;
 	/** Number of labels */
 	private static final int NUM_LABELS = 4;
 
@@ -31,7 +32,7 @@ public class JarDetailsDisplay extends JPanel
 		setBorder(BorderFactory.createCompoundBorder(
 			BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), BorderFactory.createEmptyBorder(3, 3, 3, 3))
 		);
-		_labels = new JLabel[NUM_LABELS];
+		labels = new JLabel[NUM_LABELS];
 		String[] headings = {"Name", "Path", "Size", "Files"};
 		for (int i=0; i<NUM_LABELS; i++)
 		{
@@ -44,9 +45,9 @@ public class JarDetailsDisplay extends JPanel
 		c.fill = GridBagConstraints.HORIZONTAL;
 		for (int i=0; i<NUM_LABELS; i++)
 		{
-			_labels[i] = new JLabel("");
+			labels[i] = new JLabel("");
 			c.gridy = i;
-			add(_labels[i], c);
+			add(labels[i], c);
 		}
 	}
 
@@ -56,7 +57,7 @@ public class JarDetailsDisplay extends JPanel
 	public void clear()
 	{
 		for (int i=0; i<NUM_LABELS; i++) {
-			_labels[i].setText("");
+			labels[i].setText("");
 		}
 	}
 
@@ -68,10 +69,10 @@ public class JarDetailsDisplay extends JPanel
 	 */
 	public void setContents(File inFile, CompareResults inResults, int inIndex)
 	{
-		_labels[0].setText(inFile.getName());
-		_labels[1].setText(inFile.getParent());
-		_labels[1].setToolTipText(inFile.getParent());
-		_labels[2].setText("" + inResults.getSize(inIndex));
-		_labels[3].setText("" + inResults.getNumFiles(inIndex));
+		labels[0].setText(inFile.getName());
+		labels[1].setText(inFile.getParent());
+		labels[1].setToolTipText(inFile.getParent());
+		labels[2].setText("" + inResults.getSize(inIndex));
+		labels[3].setText("" + inResults.getNumFiles(inIndex));
 	}
 }

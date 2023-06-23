@@ -9,14 +9,15 @@ import tim.jarcomp.EntryDetails.EntryStatus;
  */
 public class EntryTableModel extends AbstractTableModel
 {
+	private static final long serialVersionUID = 1L;
 	/** list of entries */
-	private ArrayList<EntryDetails> _entries = null;
+	private ArrayList<EntryDetails> entries = null;
 
 	/**
 	 * Clear list to start a new comparison
 	 */
 	public void reset() {
-		_entries = new ArrayList<>();
+		entries = new ArrayList<>();
 	}
 
 	/**
@@ -25,7 +26,7 @@ public class EntryTableModel extends AbstractTableModel
 	 */
 	public void setEntryList(ArrayList<EntryDetails> inList)
 	{
-		_entries = inList;
+		entries = inList;
 		fireTableDataChanged();
 	}
 
@@ -40,6 +41,7 @@ public class EntryTableModel extends AbstractTableModel
 	/**
 	 * @return class of column, needed for sorting the Longs properly
 	 */
+	@Override
 	public Class<?> getColumnClass(int inColNum)
 	{
 		return getValueAt(0, inColNum).getClass();
@@ -48,6 +50,7 @@ public class EntryTableModel extends AbstractTableModel
 	/**
 	 * @return column name
 	 */
+	@Override
 	public String getColumnName(int inColNum)
 	{
 		if (inColNum == 0) {return "Filename";}
@@ -60,8 +63,8 @@ public class EntryTableModel extends AbstractTableModel
 	 */
 	public int getRowCount()
 	{
-		if (_entries == null) {return 0;}
-		return _entries.size();
+		if (entries == null) {return 0;}
+		return entries.size();
 	}
 
 	/**
@@ -71,7 +74,7 @@ public class EntryTableModel extends AbstractTableModel
 	{
 		if (inRowNum >= 0 && inRowNum < getRowCount())
 		{
-			EntryDetails entry = _entries.get(inRowNum);
+			EntryDetails entry = entries.get(inRowNum);
 			if (inColNum == 0) return entry.getName();
 			else if (inColNum == 1) return getText(entry.getStatus());
 			return entry.getSizeChange();
@@ -104,7 +107,7 @@ public class EntryTableModel extends AbstractTableModel
 	public boolean areDifferent(int inRowNum)
 	{
 		if (inRowNum >= 0 && inRowNum < getRowCount()) {
-			return _entries.get(inRowNum).isChanged();
+			return entries.get(inRowNum).isChanged();
 		}
 		return false;
 	}

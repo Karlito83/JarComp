@@ -15,6 +15,11 @@ import org.w3c.tools.crypt.Md5;
  */
 public abstract class Comparer
 {
+
+	private Comparer() {
+		// Just here to hide the implicit public default constructor
+	}
+
 	/**
 	 * Compare the two given files and return the results
 	 * @param inFile1 first file
@@ -58,7 +63,7 @@ public abstract class Comparer
 	 */
 	private static int makeEntries(ArrayList<EntryDetails> inList, File inFile, int inIndex)
 	{
-		boolean checkList = (inList.size() > 0);
+		boolean checkList = !inList.isEmpty();
 		int numFiles = 0;
 		try (ZipFile zip = new ZipFile(inFile))
 		{

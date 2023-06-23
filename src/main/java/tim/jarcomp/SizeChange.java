@@ -6,17 +6,17 @@ package tim.jarcomp;
 class SizeChange implements Comparable<SizeChange>
 {
 	/** Size difference, positive means the file has grown larger */
-	private long _sizeDiff = 0L;
+	private long sizeDiff = 0L;
 	/** True if the files are in any way different, even if the size is the same */
-	private boolean _changed = false;
+	private boolean changed = false;
 
 	/**
 	 * Update the difference object when the details are found
 	 */
 	public void update(long inDiff, boolean inChanged)
 	{
-		_sizeDiff = inDiff;
-		_changed  = inChanged;
+		sizeDiff = inDiff;
+		changed  = inChanged;
 	}
 
 	/**
@@ -24,13 +24,13 @@ class SizeChange implements Comparable<SizeChange>
 	 */
 	public int compareTo(SizeChange inOther)
 	{
-		if (inOther._changed != _changed) {
-			return _changed ? 1 : -1;
+		if (inOther.changed != changed) {
+			return changed ? 1 : -1;
 		}
-		if (_sizeDiff > inOther._sizeDiff) {
+		if (sizeDiff > inOther.sizeDiff) {
 			return 1;
 		}
-		return (_sizeDiff == inOther._sizeDiff) ? 0 : -1;
+		return (sizeDiff == inOther.sizeDiff) ? 0 : -1;
 	}
 
 	/**
@@ -38,13 +38,13 @@ class SizeChange implements Comparable<SizeChange>
 	 */
 	public String toString()
 	{
-		if (!_changed) {
+		if (!changed) {
 			return "";
 		}
-		if (_sizeDiff > 0) {
-			return "+" + _sizeDiff;
+		if (sizeDiff > 0) {
+			return "+" + sizeDiff;
 		}
-		return "" + _sizeDiff;
+		return "" + sizeDiff;
 	}
 }
 

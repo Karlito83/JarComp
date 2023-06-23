@@ -10,11 +10,11 @@ import javax.swing.filechooser.FileFilter;
 public class GenericFileFilter extends FileFilter
 {
 	/** Filter description for display */
-	private final String _filterDesc;
+	private final String filterDesc;
 	/** Array of allowed three-character suffixes */
-	private String[] _threeCharSuffixes = null;
+	private String[] threeCharSuffixes = null;
 	/** Array of allowed four-character suffixes */
-	private String[] _fourCharSuffixes = null;
+	private String[] fourCharSuffixes = null;
 
 
 	/**
@@ -24,12 +24,13 @@ public class GenericFileFilter extends FileFilter
 	 */
 	public GenericFileFilter(String inDescription, String[] inSuffixes)
 	{
-		_filterDesc = inDescription;
+		filterDesc = inDescription;
 		if (inSuffixes != null && inSuffixes.length > 0)
 		{
-			_threeCharSuffixes = new String[inSuffixes.length];
-			_fourCharSuffixes = new String[inSuffixes.length];
-			int threeIndex = 0, fourIndex = 0;
+			threeCharSuffixes = new String[inSuffixes.length];
+			fourCharSuffixes = new String[inSuffixes.length];
+			int threeIndex = 0;
+			int fourIndex = 0;
 			for (String inSuffix : inSuffixes)
 			{
 				String suffix = inSuffix;
@@ -37,9 +38,9 @@ public class GenericFileFilter extends FileFilter
 				{
 					suffix = suffix.trim().toLowerCase();
 					if (suffix.length() == 3) {
-						_threeCharSuffixes[threeIndex++] = suffix;
+						threeCharSuffixes[threeIndex++] = suffix;
 					} else if (suffix.length() == 4) {
-						_fourCharSuffixes[fourIndex++] = suffix;
+						fourCharSuffixes[fourIndex++] = suffix;
 					}
 				}
 			}
@@ -71,13 +72,13 @@ public class GenericFileFilter extends FileFilter
 				char currChar = inName.charAt(nameLen - 4);
 				if (currChar == '.')
 				{
-					return acceptFilename(inName.substring(nameLen - 3).toLowerCase(), _threeCharSuffixes);
+					return acceptFilename(inName.substring(nameLen - 3).toLowerCase(), threeCharSuffixes);
 				}
 				// check for four character suffixes
 				currChar = inName.charAt(nameLen - 5);
 				if (currChar == '.')
 				{
-					return acceptFilename(inName.substring(nameLen - 4).toLowerCase(), _fourCharSuffixes);
+					return acceptFilename(inName.substring(nameLen - 4).toLowerCase(), fourCharSuffixes);
 				}
 			}
 		}
@@ -114,7 +115,7 @@ public class GenericFileFilter extends FileFilter
 	 */
 	public String getDescription()
 	{
-		return _filterDesc;
+		return filterDesc;
 	}
 
 }

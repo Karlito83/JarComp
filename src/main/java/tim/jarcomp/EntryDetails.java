@@ -7,15 +7,15 @@ package tim.jarcomp;
 public class EntryDetails
 {
 	/** Name of entry, including full path */
-	private String _name = null;
+	private String name = null;
 	/** Flag to show if it's present or not (might be zero length) */
-	private final boolean[] _present = new boolean[2];
+	private final boolean[] present = new boolean[2];
 	/** Sizes of this file, in bytes, in archives */
-	private final long[] _sizes = new long[2];
+	private final long[] sizes = new long[2];
 	/** Md5 sums in both archives */
-	private final String[] _md5Sums = new String[2];
+	private final String[] md5Sums = new String[2];
 	/** SizeChange */
-	private final SizeChange _sizeChange = new SizeChange();
+	private final SizeChange sizeChange = new SizeChange();
 
 	/** Constants for entry status */
 	public enum EntryStatus
@@ -33,14 +33,14 @@ public class EntryDetails
 	 * @return name of entry
 	 */
 	public String getName() {
-		return _name;
+		return name;
 	}
 
 	/**
 	 * @param inName name to set
 	 */
 	public void setName(String inName) {
-		_name = inName;
+		name = inName;
 	}
 
 	/**
@@ -50,7 +50,7 @@ public class EntryDetails
 	public long getSize(int inIndex)
 	{
 		if (inIndex < 0 || inIndex > 1) {return 0L;}
-		return _sizes[inIndex];
+		return sizes[inIndex];
 	}
 
 	/**
@@ -61,9 +61,9 @@ public class EntryDetails
 	{
 		if (inIndex==0 || inIndex==1)
 		{
-			_sizes[inIndex] = inSize;
-			_present[inIndex] = true;
-			_sizeChange.update(_sizes[1] - _sizes[0], isChanged());
+			sizes[inIndex] = inSize;
+			present[inIndex] = true;
+			sizeChange.update(sizes[1] - sizes[0], isChanged());
 		}
 	}
 
@@ -75,8 +75,8 @@ public class EntryDetails
 	{
 		if (inIndex==0 || inIndex==1)
 		{
-			_md5Sums[inIndex] = inMd5Sum;
-			_sizeChange.update(_sizes[1] - _sizes[0], isChanged());
+			md5Sums[inIndex] = inMd5Sum;
+			sizeChange.update(sizes[1] - sizes[0], isChanged());
 		}
 	}
 
@@ -85,7 +85,7 @@ public class EntryDetails
 	 */
 	public boolean getMd5Checked()
 	{
-		return (_md5Sums[0] != null && _md5Sums[1] != null);
+		return (md5Sums[0] != null && md5Sums[1] != null);
 	}
 
 	/**
@@ -93,12 +93,12 @@ public class EntryDetails
 	 */
 	public EntryStatus getStatus()
 	{
-		if (!_present[0] && _present[1]) {return EntryStatus.ADDED;}
-		if (_present[0] && !_present[1]) {return EntryStatus.REMOVED;}
-		if (_sizes[0] != _sizes[1]) {return EntryStatus.CHANGED_SIZE;}
+		if (!present[0] && present[1]) {return EntryStatus.ADDED;}
+		if (present[0] && !present[1]) {return EntryStatus.REMOVED;}
+		if (sizes[0] != sizes[1]) {return EntryStatus.CHANGED_SIZE;}
 		if (!getMd5Checked()) {return EntryStatus.SAME_SIZE;}
 		// md5 sums have been checked
-		if (!_md5Sums[0].equals(_md5Sums[1])) {return EntryStatus.CHANGED_SUM;}
+		if (!md5Sums[0].equals(md5Sums[1])) {return EntryStatus.CHANGED_SUM;}
 		return EntryStatus.EQUAL;
 	}
 
@@ -107,7 +107,7 @@ public class EntryDetails
 	 */
 	public SizeChange getSizeChange()
 	{
-		return _sizeChange;
+		return sizeChange;
 	}
 
 	/**

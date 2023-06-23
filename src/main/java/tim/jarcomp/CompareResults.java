@@ -8,9 +8,9 @@ import java.util.ArrayList;
 public class CompareResults extends EntryDetails
 {
 	/** list of entries */
-	private ArrayList<EntryDetails> _entries = null;
+	private ArrayList<EntryDetails> entries = null;
 	/** Number of files in each archive */
-	private final int[] _numFiles = new int[2];
+	private final int[] numFiles = new int[2];
 
 
 	/**
@@ -18,7 +18,7 @@ public class CompareResults extends EntryDetails
 	 */
 	public void setEntryList(ArrayList<EntryDetails> inList)
 	{
-		_entries = inList;
+		entries = inList;
 	}
 
 	/**
@@ -26,7 +26,7 @@ public class CompareResults extends EntryDetails
 	 */
 	public ArrayList<EntryDetails> getEntryList()
 	{
-		return _entries;
+		return entries;
 	}
 
 	/**
@@ -36,7 +36,7 @@ public class CompareResults extends EntryDetails
 	public int getNumFiles(int inIndex)
 	{
 		if (inIndex < 0 || inIndex > 1) {return 0;}
-		return _numFiles[inIndex];
+		return numFiles[inIndex];
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class CompareResults extends EntryDetails
 	public void setNumFiles(int inIndex, int inNumFiles)
 	{
 		if (inIndex==0 || inIndex==1) {
-			_numFiles[inIndex] = inNumFiles;
+			numFiles[inIndex] = inNumFiles;
 		}
 	}
 
@@ -57,7 +57,7 @@ public class CompareResults extends EntryDetails
 	public boolean getEntriesDifferent()
 	{
 		// Loop over all entries
-		for (EntryDetails entry : _entries)
+		for (EntryDetails entry : entries)
 		{
 			EntryStatus status = entry.getStatus();
 			if (status != EntryStatus.EQUAL && status != EntryStatus.SAME_SIZE) {
@@ -73,7 +73,7 @@ public class CompareResults extends EntryDetails
 	public boolean getEntriesMd5Checked()
 	{
 		// Loop over all entries
-		for (EntryDetails entry : _entries)
+		for (EntryDetails entry : entries)
 		{
 			if (entry.getStatus() == EntryStatus.SAME_SIZE) {
 				return false;

@@ -26,25 +26,25 @@ import javax.swing.table.TableCellRenderer;
 public class CompareWindow
 {
 	/** Main window object */
-	private final JFrame _mainWindow;
+	private final JFrame mainWindow;
 	/** Two files to compare */
-	private final File[] _files = new File[2];
+	private final File[] filesToCompare = new File[2];
 	/** Displays for jar file details */
-	private JarDetailsDisplay[] _detailsDisplays = null;
+	private JarDetailsDisplay[] detailsDisplays = null;
 	/** Label for compare status */
-	private JLabel _statusLabel = null;
+	private JLabel statusLabel = null;
 	/** Second label for contents status */
-	private JLabel _statusLabel2 = null;
+	private JLabel statusLabel2 = null;
 	/** Table model */
-	private EntryTableModel _tableModel = null;
+	private EntryTableModel tableModel = null;
 	/** File chooser */
-	private JFileChooser _fileChooser = null;
+	private JFileChooser fileChooser = null;
 	/** Button to check md5 sums */
-	private JButton _md5Button = null;
+	private JButton md5Button = null;
 	/** Refresh button to repeat comparison */
-	private JButton _refreshButton = null;
+	private JButton refreshButton = null;
 	/** Flag to process md5 sums */
-	private boolean _checkMd5 = false;
+	private boolean checkMd5 = false;
 
 
 	/**
@@ -52,15 +52,16 @@ public class CompareWindow
 	 */
 	public CompareWindow()
 	{
-		_mainWindow = new JFrame("Jar Comparer");
-		_mainWindow.addWindowListener(new WindowAdapter() {
+		mainWindow = new JFrame("Jar Comparer");
+		mainWindow.addWindowListener(new WindowAdapter() {
+			@Override
 			public void windowClosing(WindowEvent e) {
 				System.exit(0);
 			}
 		});
-		_mainWindow.getContentPane().add(makeComponents());
-		_mainWindow.pack();
-		_mainWindow.setVisible(true);
+		mainWindow.getContentPane().add(makeComponents());
+		mainWindow.pack();
+		mainWindow.setVisible(true);
 	}
 
 	/**
@@ -80,38 +81,41 @@ public class CompareWindow
 		JButton compareButton = new JButton("Compare ...");
 		compareButton.addActionListener(e -> startCompare());
 		buttonPanel.add(compareButton);
-		_refreshButton = new JButton("Refresh");
-		_refreshButton.setEnabled(false);
-		_refreshButton.addActionListener(e -> startCompare(_files[0], _files[1], false));
-		buttonPanel.add(_refreshButton);
+		refreshButton = new JButton("Refresh");
+		refreshButton.setEnabled(false);
+		refreshButton.addActionListener(e -> startCompare(filesToCompare[0], filesToCompare[1], false));
+		buttonPanel.add(refreshButton);
 		buttonPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		topPanel.add(buttonPanel);
 
 		JPanel detailsPanel = new JPanel();
 		detailsPanel.setLayout(new GridLayout(1, 2, 5, 5));
-		_detailsDisplays = new JarDetailsDisplay[2];
-		_detailsDisplays[0] = new JarDetailsDisplay();
-		detailsPanel.add(_detailsDisplays[0], BorderLayout.WEST);
-		_detailsDisplays[1] = new JarDetailsDisplay();
-		detailsPanel.add(_detailsDisplays[1], BorderLayout.EAST);
+		detailsDisplays = new JarDetailsDisplay[2];
+		detailsDisplays[0] = new JarDetailsDisplay();
+		detailsPanel.add(detailsDisplays[0], BorderLayout.WEST);
+		detailsDisplays[1] = new JarDetailsDisplay();
+		detailsPanel.add(detailsDisplays[1], BorderLayout.EAST);
 		topPanel.add(detailsPanel);
 		detailsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-		_statusLabel = new JLabel("");
-		_statusLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		_statusLabel.setBorder(new EmptyBorder(5, 10, 1, 1));
-		topPanel.add(_statusLabel);
-		_statusLabel2 = new JLabel("");
-		_statusLabel2.setAlignmentX(Component.LEFT_ALIGNMENT);
-		_statusLabel2.setBorder(new EmptyBorder(1, 10, 5, 1));
-		topPanel.add(_statusLabel2);
+		statusLabel = new JLabel("");
+		statusLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		statusLabel.setBorder(new EmptyBorder(5, 10, 1, 1));
+		topPanel.add(statusLabel);
+		statusLabel2 = new JLabel("");
+		statusLabel2.setAlignmentX(Component.LEFT_ALIGNMENT);
+		statusLabel2.setBorder(new EmptyBorder(1, 10, 5, 1));
+		topPanel.add(statusLabel2);
 		mainPanel.add(topPanel, BorderLayout.NORTH);
 
 		// main table panel
-		_tableModel = new EntryTableModel();
-		JTable table = new JTable(_tableModel)
+		tableModel = new EntryTableModel();
+		JTable table = new JTable(tableModel)
 		{
+			private static final long serialVersionUID = 1L;
+
 			/** Modify the renderer according to the row status */
+			@Override
 			public Component prepareRenderer(TableCellRenderer renderer, int row, int column)
 			{
 				Component c = super.prepareRenderer(renderer, row, column);
@@ -134,10 +138,10 @@ public class CompareWindow
 		// button panel at bottom
 		JPanel bottomPanel = new JPanel();
 		bottomPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		_md5Button = new JButton("Check Md5 sums");
-		_md5Button.setEnabled(false);
-		_md5Button.addActionListener(arg0 -> startCompare(_files[0], _files[1], true));
-		bottomPanel.add(_md5Button);
+		md5Button = new JButton("Check Md5 sums");
+		md5Button.setEnabled(false);
+		md5Button.addActionListener(arg0 -> startCompare(filesToCompare[0], filesToCompare[1], true));
+		bottomPanel.add(md5Button);
 		JButton closeButton = new JButton("Close");
 		closeButton.addActionListener(arg0 -> System.exit(0));
 		bottomPanel.add(closeButton);
@@ -162,7 +166,7 @@ public class CompareWindow
 	public void startCompare(File inFile1, File inFile2, boolean inMd5)
 	{
 		// Clear table model
-		_tableModel.reset();
+		tableModel.reset();
 
 		File file1 = inFile1;
 		File file2 = inFile2;
@@ -177,16 +181,16 @@ public class CompareWindow
 		}
 		// Bail if cancel pressed
 		if (file2 == null) {return;}
-		_files[0] = file1;
-		_files[1] = file2;
+		filesToCompare[0] = file1;
+		filesToCompare[1] = file2;
 
 		// Clear displays
-		_detailsDisplays[0].clear();
-		_detailsDisplays[1].clear();
-		_statusLabel.setText("comparing...");
+		detailsDisplays[0].clear();
+		detailsDisplays[1].clear();
+		statusLabel.setText("comparing...");
 
 		// Start separate thread to compare files
-		_checkMd5 = inMd5;
+		checkMd5 = inMd5;
 		new Thread(this::doCompare).start();
 	}
 
@@ -195,32 +199,32 @@ public class CompareWindow
 	 */
 	private void doCompare()
 	{
-		CompareResults results = Comparer.compare(_files[0], _files[1], _checkMd5);
-		_tableModel.setEntryList(results.getEntryList());
+		CompareResults results = Comparer.compare(filesToCompare[0], filesToCompare[1], checkMd5);
+		tableModel.setEntryList(results.getEntryList());
 		final boolean archivesDifferent = (results.getStatus() == EntryDetails.EntryStatus.CHANGED_SIZE);
 		if (archivesDifferent) {
-			_statusLabel.setText("Archives have different size (" + results.getSize(0) + ", " + results.getSize(1) + ")");
+			statusLabel.setText("Archives have different size (" + results.getSize(0) + ", " + results.getSize(1) + ")");
 		}
 		else {
-			_statusLabel.setText("Archives have the same size (" + results.getSize(0)+ ")");
+			statusLabel.setText("Archives have the same size (" + results.getSize(0)+ ")");
 		}
-		_detailsDisplays[0].setContents(_files[0], results, 0);
-		_detailsDisplays[1].setContents(_files[1], results, 1);
+		detailsDisplays[0].setContents(filesToCompare[0], results, 0);
+		detailsDisplays[1].setContents(filesToCompare[1], results, 1);
 
 		if (results.getEntriesDifferent()) {
-			_statusLabel2.setText((archivesDifferent?"and":"but") + " the files have different contents");
+			statusLabel2.setText((archivesDifferent?"and":"but") + " the files have different contents");
 		}
 		else {
 			if (results.getEntriesMd5Checked()) {
-				_statusLabel2.setText((archivesDifferent?"but":"and") + " the files have exactly the same contents");
+				statusLabel2.setText((archivesDifferent?"but":"and") + " the files have exactly the same contents");
 			}
 			else {
-				_statusLabel2.setText((archivesDifferent?"but":"and") + " the files appear to have the same contents");
+				statusLabel2.setText((archivesDifferent?"but":"and") + " the files appear to have the same contents");
 			}
 		}
-		_md5Button.setEnabled(!results.getEntriesMd5Checked());
-		_checkMd5 = false;
-		_refreshButton.setEnabled(true);
+		md5Button.setEnabled(!results.getEntriesMd5Checked());
+		checkMd5 = false;
+		refreshButton.setEnabled(true);
 		// Possibilities:
 		//      Jars have same size, same md5 sum, same contents
 		//      Jars have same size but different md5 sum, different contents
@@ -240,28 +244,28 @@ public class CompareWindow
 	 */
 	private File selectFile(String inTitle, File inFirstFile)
 	{
-		if (_fileChooser == null)
+		if (fileChooser == null)
 		{
-			_fileChooser = new JFileChooser();
-			_fileChooser.setFileFilter(new GenericFileFilter("Jar files and Zip files", new String[] {"jar", "zip"}));
+			fileChooser = new JFileChooser();
+			fileChooser.setFileFilter(new GenericFileFilter("Jar files and Zip files", new String[] {"jar", "zip"}));
 		}
-		_fileChooser.setDialogTitle(inTitle);
+		fileChooser.setDialogTitle(inTitle);
 		File file = null;
 		boolean rechoose = true;
 		while (rechoose)
 		{
 			file = null;
 			rechoose = false;
-			int result = _fileChooser.showOpenDialog(_mainWindow);
+			int result = fileChooser.showOpenDialog(mainWindow);
 			if (result == JFileChooser.APPROVE_OPTION)
 			{
-				file = _fileChooser.getSelectedFile();
+				file = fileChooser.getSelectedFile();
 				rechoose = (!file.exists() || !file.canRead());
 			}
 			// Check it's not the same as the first file, if any
 			if (file != null && file.equals(inFirstFile))
 			{
-				JOptionPane.showMessageDialog(_mainWindow, "The second file is the same as the first file!\n"
+				JOptionPane.showMessageDialog(mainWindow, "The second file is the same as the first file!\n"
 					+ "Please select another file to compare with '" + inFirstFile.getName() + "'",
 					"Two files equal", JOptionPane.ERROR_MESSAGE);
 				rechoose = true;

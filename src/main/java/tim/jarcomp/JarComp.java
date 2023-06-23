@@ -21,7 +21,8 @@ public class JarComp
 	public static void main(String[] args)
 	{
 		// Parse command line arguments, extract two files if available
-		File file1 = null, file2 = null;
+		File file1 = null;
+		File file2 = null;
 		if (args != null && args.length > 0)
 		{
 			file1 = new File(args[0]);
