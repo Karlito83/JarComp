@@ -3,12 +3,10 @@ package tim.jarcomp;
 import java.io.File;
 import javax.swing.filechooser.FileFilter;
 
-
 /**
  * Class to act as a generic file filter based on file extension
  */
-public class GenericFileFilter extends FileFilter
-{
+public class GenericFileFilter extends FileFilter {
 	/** Filter description for display */
 	private final String filterDesc;
 	/** Array of allowed three-character suffixes */
@@ -16,26 +14,22 @@ public class GenericFileFilter extends FileFilter
 	/** Array of allowed four-character suffixes */
 	private String[] fourCharSuffixes = null;
 
-
 	/**
 	 * Constructor
+	 * 
 	 * @param inDescription filter description
-	 * @param inSuffixes array of allowed 3- and 4-character file suffixes
+	 * @param inSuffixes    array of allowed 3- and 4-character file suffixes
 	 */
-	public GenericFileFilter(String inDescription, String[] inSuffixes)
-	{
+	public GenericFileFilter(String inDescription, String[] inSuffixes) {
 		filterDesc = inDescription;
-		if (inSuffixes != null && inSuffixes.length > 0)
-		{
+		if (inSuffixes != null && inSuffixes.length > 0) {
 			threeCharSuffixes = new String[inSuffixes.length];
 			fourCharSuffixes = new String[inSuffixes.length];
 			int threeIndex = 0;
 			int fourIndex = 0;
-			for (String inSuffix : inSuffixes)
-			{
+			for (String inSuffix : inSuffixes) {
 				String suffix = inSuffix;
-				if (suffix != null)
-				{
+				if (suffix != null) {
 					suffix = suffix.trim().toLowerCase();
 					if (suffix.length() == 3) {
 						threeCharSuffixes[threeIndex++] = suffix;
@@ -49,35 +43,31 @@ public class GenericFileFilter extends FileFilter
 
 	/**
 	 * Check whether to accept the specified file or not
+	 * 
 	 * @see javax.swing.filechooser.FileFilter#accept(java.io.File)
 	 */
-	public boolean accept(File inFile)
-	{
+	public boolean accept(File inFile) {
 		return inFile.isDirectory() || acceptFilename(inFile.getName());
 	}
 
 	/**
 	 * Check whether to accept the given filename
+	 * 
 	 * @param inName name of file
 	 * @return true if accepted, false otherwise
 	 */
-	public boolean acceptFilename(String inName)
-	{
-		if (inName != null)
-		{
+	public boolean acceptFilename(String inName) {
+		if (inName != null) {
 			int nameLen = inName.length();
-			if (nameLen > 4)
-			{
+			if (nameLen > 4) {
 				// Check for three character suffixes
 				char currChar = inName.charAt(nameLen - 4);
-				if (currChar == '.')
-				{
+				if (currChar == '.') {
 					return acceptFilename(inName.substring(nameLen - 3).toLowerCase(), threeCharSuffixes);
 				}
 				// check for four character suffixes
 				currChar = inName.charAt(nameLen - 5);
-				if (currChar == '.')
-				{
+				if (currChar == '.') {
 					return acceptFilename(inName.substring(nameLen - 4).toLowerCase(), fourCharSuffixes);
 				}
 			}
@@ -88,17 +78,15 @@ public class GenericFileFilter extends FileFilter
 
 	/**
 	 * Check whether to accept the given filename
-	 * @param inSuffixToCheck suffix to check
+	 * 
+	 * @param inSuffixToCheck   suffix to check
 	 * @param inAllowedSuffixes array of allowed suffixes
 	 * @return true if accepted, false otherwise
 	 */
-	public boolean acceptFilename(String inSuffixToCheck, String[] inAllowedSuffixes)
-	{
-		if (inSuffixToCheck != null && inAllowedSuffixes != null)
-		{
+	public boolean acceptFilename(String inSuffixToCheck, String[] inAllowedSuffixes) {
+		if (inSuffixToCheck != null && inAllowedSuffixes != null) {
 			// Loop over allowed suffixes
-			for (String inAllowedSuffix : inAllowedSuffixes)
-			{
+			for (String inAllowedSuffix : inAllowedSuffixes) {
 				if (inAllowedSuffix != null && inSuffixToCheck.equals(inAllowedSuffix)) {
 					return true;
 				}
@@ -108,13 +96,12 @@ public class GenericFileFilter extends FileFilter
 		return false;
 	}
 
-
 	/**
 	 * Get description
+	 * 
 	 * @see javax.swing.filechooser.FileFilter#getDescription()
 	 */
-	public String getDescription()
-	{
+	public String getDescription() {
 		return filterDesc;
 	}
 

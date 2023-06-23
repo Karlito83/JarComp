@@ -3,8 +3,7 @@ package tim.jarcomp;
 /**
  * Class to represent a size change for sorting and display
  */
-class SizeChange implements Comparable<SizeChange>
-{
+class SizeChange implements Comparable<SizeChange> {
 	/** Size difference, positive means the file has grown larger */
 	private long sizeDiff = 0L;
 	/** True if the files are in any way different, even if the size is the same */
@@ -13,17 +12,15 @@ class SizeChange implements Comparable<SizeChange>
 	/**
 	 * Update the difference object when the details are found
 	 */
-	public void update(long inDiff, boolean inChanged)
-	{
+	public void update(long inDiff, boolean inChanged) {
 		sizeDiff = inDiff;
-		changed  = inChanged;
+		changed = inChanged;
 	}
 
 	/**
 	 * compare two objects
 	 */
-	public int compareTo(SizeChange inOther)
-	{
+	public int compareTo(SizeChange inOther) {
 		if (inOther.changed != changed) {
 			return changed ? 1 : -1;
 		}
@@ -36,8 +33,7 @@ class SizeChange implements Comparable<SizeChange>
 	/**
 	 * @return value as a string for display
 	 */
-	public String toString()
-	{
+	public String toString() {
 		if (!changed) {
 			return "";
 		}
@@ -47,4 +43,3 @@ class SizeChange implements Comparable<SizeChange>
 		return "" + sizeDiff;
 	}
 }
-

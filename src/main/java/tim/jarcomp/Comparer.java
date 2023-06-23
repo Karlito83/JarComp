@@ -10,11 +10,10 @@ import java.util.zip.ZipFile;
 import org.w3c.tools.crypt.Md5;
 
 /**
- * Class to do the actual comparison of jar files,
- * populating a list of EntryDetails objects
+ * Class to do the actual comparison of jar files, populating a list of
+ * EntryDetails objects
  */
-public abstract class Comparer
-{
+public abstract class Comparer {
 
 	private Comparer() {
 		// Just here to hide the implicit public default constructor
@@ -22,13 +21,13 @@ public abstract class Comparer
 
 	/**
 	 * Compare the two given files and return the results
+	 * 
 	 * @param inFile1 first file
 	 * @param inFile2 second file
-	 * @param inMd5 true to also check md5 sums
+	 * @param inMd5   true to also check md5 sums
 	 * @return results of comparison
 	 */
-	public static CompareResults compare(File inFile1, File inFile2, boolean inMd5)
-	{
+	public static CompareResults compare(File inFile1, File inFile2, boolean inMd5) {
 		// Make results object and compare file sizes
 		CompareResults results = new CompareResults();
 		results.setSize(0, inFile1.length());
@@ -44,8 +43,7 @@ public abstract class Comparer
 		results.setEntryList(entryList);
 
 		// Check md5 sums if necessary
-		if (inMd5)
-		{
+		if (inMd5) {
 			calculateMd5(results, inFile1, 0);
 			calculateMd5(results, inFile2, 1);
 		}
@@ -56,20 +54,18 @@ public abstract class Comparer
 
 	/**
 	 * Make entrydetails objects for each entry in the given file and put in list
-	 * @param inList list of entries so far
-	 * @param inFile zip/jar file to search through
+	 * 
+	 * @param inList  list of entries so far
+	 * @param inFile  zip/jar file to search through
 	 * @param inIndex 0 for first file, 1 for second
 	 * @return number of files found
 	 */
-	private static int makeEntries(ArrayList<EntryDetails> inList, File inFile, int inIndex)
-	{
+	private static int makeEntries(ArrayList<EntryDetails> inList, File inFile, int inIndex) {
 		boolean checkList = !inList.isEmpty();
 		int numFiles = 0;
-		try (ZipFile zip = new ZipFile(inFile))
-		{
+		try (ZipFile zip = new ZipFile(inFile)) {
 			Enumeration<?> zipEntries = zip.entries();
-			while (zipEntries.hasMoreElements())
-			{
+			while (zipEntries.hasMoreElements()) {
 				ZipEntry ze = (ZipEntry) zipEntries.nextElement();
 				if (ze.isDirectory()) {
 					continue; // ignore these
@@ -81,8 +77,7 @@ public abstract class Comparer
 					details = getEntryFromList(inList, name);
 				}
 				// Construct new details object if necessary
-				if (details == null)
-				{
+				if (details == null) {
 					details = new EntryDetails();
 					details.setName(name);
 					inList.add(details);
@@ -98,13 +93,12 @@ public abstract class Comparer
 
 	/**
 	 * Look up the given name in the list
+	 * 
 	 * @param inList list of EntryDetails objects
 	 * @param inName name to look up
 	 */
-	private static EntryDetails getEntryFromList(ArrayList<EntryDetails> inList, String inName)
-	{
-		for (EntryDetails details : inList)
-		{
+	private static EntryDetails getEntryFromList(ArrayList<EntryDetails> inList, String inName) {
+		for (EntryDetails details : inList) {
 			if (details.getName() != null && details.getName().equals(inName)) {
 				return details;
 			}
@@ -114,26 +108,21 @@ public abstract class Comparer
 
 	/**
 	 * Calculate the md5 sums of all relevant entries
+	 * 
 	 * @param inResults results from preliminary check
-	 * @param inFile file to read
-	 * @param inIndex file index, either 0 or 1
+	 * @param inFile    file to read
+	 * @param inIndex   file index, either 0 or 1
 	 */
-	private static void calculateMd5(CompareResults inResults, File inFile, int inIndex)
-	{
+	private static void calculateMd5(CompareResults inResults, File inFile, int inIndex) {
 		ArrayList<EntryDetails> list = inResults.getEntryList();
-		try (ZipFile zip = new ZipFile(inFile))
-		{
-			for (EntryDetails entry : list)
-			{
-				if (entry.getStatus() == EntryDetails.EntryStatus.SAME_SIZE)
-				{
+		try (ZipFile zip = new ZipFile(inFile)) {
+			for (EntryDetails entry : list) {
+				if (entry.getStatus() == EntryDetails.EntryStatus.SAME_SIZE) {
 					// Must be present in both archives if size is the same
 					ZipEntry zipEntry = zip.getEntry(entry.getName());
 					if (zipEntry == null) {
 						System.err.println("zipEntry for " + entry.getName() + " shouldn't be null!");
-					}
-					else
-					{
+					} else {
 						Md5 hasher = new Md5(zip.getInputStream(zipEntry));
 						byte[] digest = hasher.getDigest();
 						if (digest != null) {

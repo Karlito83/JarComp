@@ -12,8 +12,7 @@ import javax.swing.border.EtchedBorder;
 /**
  * Display unit for the details of a single jar file
  */
-public class JarDetailsDisplay extends JPanel
-{
+public class JarDetailsDisplay extends JPanel {
 	private static final long serialVersionUID = 1L;
 	/** Array of four labels for details */
 	private final JLabel[] labels;
@@ -23,19 +22,16 @@ public class JarDetailsDisplay extends JPanel
 	/**
 	 * Constructor
 	 */
-	public JarDetailsDisplay()
-	{
+	public JarDetailsDisplay() {
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.weightx = 0.25;
-		setBorder(BorderFactory.createCompoundBorder(
-			BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), BorderFactory.createEmptyBorder(3, 3, 3, 3))
-		);
+		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED),
+				BorderFactory.createEmptyBorder(3, 3, 3, 3)));
 		labels = new JLabel[NUM_LABELS];
-		String[] headings = {"Name", "Path", "Size", "Files"};
-		for (int i=0; i<NUM_LABELS; i++)
-		{
+		String[] headings = { "Name", "Path", "Size", "Files" };
+		for (int i = 0; i < NUM_LABELS; i++) {
 			JLabel preLabel = new JLabel(headings[i] + " :");
 			c.gridy = i;
 			add(preLabel, c);
@@ -43,8 +39,7 @@ public class JarDetailsDisplay extends JPanel
 		c.gridx = 1;
 		c.weightx = 0.75;
 		c.fill = GridBagConstraints.HORIZONTAL;
-		for (int i=0; i<NUM_LABELS; i++)
-		{
+		for (int i = 0; i < NUM_LABELS; i++) {
 			labels[i] = new JLabel("");
 			c.gridy = i;
 			add(labels[i], c);
@@ -54,21 +49,20 @@ public class JarDetailsDisplay extends JPanel
 	/**
 	 * Clear the contents
 	 */
-	public void clear()
-	{
-		for (int i=0; i<NUM_LABELS; i++) {
+	public void clear() {
+		for (int i = 0; i < NUM_LABELS; i++) {
 			labels[i].setText("");
 		}
 	}
 
 	/**
 	 * Set the contents of the display using the given compare results
-	 * @param inFile file object
+	 * 
+	 * @param inFile    file object
 	 * @param inResults results of comparison
-	 * @param inIndex 0 or 1
+	 * @param inIndex   0 or 1
 	 */
-	public void setContents(File inFile, CompareResults inResults, int inIndex)
-	{
+	public void setContents(File inFile, CompareResults inResults, int inIndex) {
 		labels[0].setText(inFile.getName());
 		labels[1].setText(inFile.getParent());
 		labels[1].setToolTipText(inFile.getParent());
